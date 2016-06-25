@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fund">
+    <resultMap id="fundMap" type="com.jxnu.it.business.model.Fund">
+        <id property="code" column="code"/>
+        <result property="name" column="name"/>
+        <result property="name" column="name"/>
+        <result property="scale" column="scale"/>
+        <association property="fundHandler" column="handler" select="fundHandler.find"/>
+        <association property="fundCompany" column="fund_company_id" select="fundCompany.find"/>
+        <association property="fundNetWorth" column="code" select="fund.findNetWorthByCode"/>
+    </resultMap>
+
+    <resultMap id="fundNetWorthMap" type="com.jxnu.it.business.model.FundNetWorth">
+        <id property="code" column="code"/>
+        <result column="code" property="code"/>
+        <result column="time" property="time"/>
+        <result column="net_worth" property="netWorth"/>
+        <result column="ratio" property="ratio"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <select id="find" parameterType="java.lang.Integer" resultMap="fundMap">
+         SELECT
+            code,
+            name,
+            handler,
+            scale,
+            fund_company_id
+         FROM
+            tbl_fund
+         WHERE
+            code = #{code}
+    </select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="fundMap">
+        SELECT
+        a.code,
+        a.name,
+        a.handler,
+        a.scale,
+        a.fund_company_id
+        FROM
+        tbl_fund a
+        <where>
+            <if test="null != keyword and keyword !='' ">
+                AND (name like concat('%',#{keyword},'%'))
+            </if>
+            <if test="null != code and code !=''">
+                AND code=#{code}
+            </if>
+        </where>
+        <if test="null != startIndex">
+            LIMIT #{startIndex},#{pageSize}
+        </if>
+    </select>
+
+    <insert id="create" parameterType="com.jxnu.it.business.model.Fund">
+          INSERT IGNORE INTO
+                  tbl_fund
+                  (
+                     code,
+                     name,
+                     handler,
+                     scale,
+                     fund_company_id
+                  )
+               VALUES
+                  (
+                    #{code},
+                    #{name},
+                    #{fundHandler.id},
+                    #{scale},
+                    #{fundCompany.id}
+                  )
+    </insert>
+
+    <update id="edit" parameterType="com.jxnu.it.business.model.Fund">
+         UPDATE
+             tbl_fund
+           SET
+             name=#{name},
+             handler=#{fundHandler.id},
+             fund_company_id = #{fundCompany.id}
+          WHERE
+             code = #{code}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+         DELETE
+         FROM
+            tbl_fund
+         where code=#{code}
+    </delete>
+
+    <select id="queryFundNetWorth" parameterType="java.lang.Integer" resultMap="fundNetWorthMap">
+        SELECT
+           code,
+           time,
+           net_worth,
+           ratio,
+           create_time
+        FROM  tbl_fund_net_worth
+        WHERE
+              code=#{code}
+        ORDER BY time ASC
+    </select>
+
+    <insert id="insertFundShare" parameterType="com.jxnu.it.business.model.FundShare">
+        INSERT INTO tbl_fund_share
+           (code, share, order_id)
+           VALUES (
+              #{code},
+              #{share},
+              #{fundOrder.id}
+           )
+    </insert>
+
+    <insert id="insertFundBank" parameterType="com.jxnu.it.business.model.FundRank">
+        INSERT INTO  tbl_fund_day_rank
+           (time, code, fund_name, rank)
+           VALUES (
+              #{time},
+              #{code},
+              #{fundName},
+              #{rank}
+           )
+    </insert>
+
+
+    <select id="queryFundBankCount" parameterType="com.jxnu.it.business.model.FundRank" resultType="java.lang.Integer">
+        SELECT COUNT(id)
+           FROM tbl_fund_day_rank
+           WHERE time=#{time}
+           and code=#{code}
+    </select>
+
+    <insert id="insertFundNetWorth" parameterType="com.jxnu.it.business.model.FundNetWorth">
+        INSERT INTO  tbl_fund_net_worth
+        (code, time, net_worth, ratio)
+        VALUES (
+        #{code},
+        #{time},
+        #{netWorth},
+        #{ratio}
+        )
+    </insert>
+
+    <select id="queryFundNetWorthCount" parameterType="com.jxnu.it.business.model.FundNetWorth"
+            resultType="java.lang.Integer">
+        SELECT COUNT(id)
+        FROM tbl_fund_net_worth
+        WHERE time=#{time}
+        and code=#{code}
+    </select>
+
+    <insert id="insertFundAccount" parameterType="com.jxnu.it.business.model.FundAccount">
+        insert INTO tbl_fund_account
+               ( code,  total)
+               values(
+                     #{code},
+                     #{total}
+               )
+    </insert>
+
+    <select id="queryFundNewCount" parameterType="com.jxnu.it.business.model.FundNew" resultType="java.lang.Integer">
+        SELECT  count(id)
+        FROM tbl_fund_new
+        WHERE code=#{code }
+    </select>
+
+    <insert id="insertFundNew" parameterType="com.jxnu.it.business.model.FundNew">
+        insert INTO  tbl_fund_new
+             (code, fund_name, fund_company_name, fund_company_code,period)
+             VALUES
+             (
+                #{code},
+                #{fundName},
+                #{fundCompanyName},
+                #{fundCompanyCode},
+                #{period}
+             )
+    </insert>
+
+    <select id="findNetWorthByCode"  resultMap="fundNetWorthMap" parameterType="java.lang.Integer">
+        SELECT
+           *
+        FROM  tbl_fund_net_worth
+        WHERE  code=#{code}
+        ORDER  by time DESC
+        LIMIT 0,1
+    </select>
+</mapper>

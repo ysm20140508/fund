@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fundHandler">
+    <resultMap id="fundHandlerMap" type="com.jxnu.it.business.model.FundHandler">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="fundHandlerCode" column="fund_handler_code"/>
+        <association property="fundCompany" column="fund_company_id" select="fundCompany.find"/>
+    </resultMap>
+
+    <select id="find" parameterType="java.lang.Integer" resultMap="fundHandlerMap">
+         SELECT
+            id,
+            name,
+            fund_company_id,
+            fund_handler_code
+         FROM
+            tbl_fund_handler
+         WHERE
+            id = #{id}
+    </select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="fundHandlerMap">
+        SELECT
+        id,
+        name,
+        fund_company_id,
+        fund_handler_code
+        FROM
+        tbl_fund_handler
+        <where>
+            <if test="null != keyword and keyword !='' ">
+                AND (name like concat('%',#{keyword},'%'))
+            </if>
+        </where>
+        <if test="null != startIndex">
+            LIMIT #{startIndex},#{pageSize}
+        </if>
+    </select>
+
+    <insert id="create" parameterType="com.jxnu.it.business.model.FundHandler">
+          INSERT IGNORE INTO
+                  tbl_fund_handler
+                  (
+                     name,
+                     fund_company_id,
+                     fund_handler_code
+                  )
+               VALUES
+                  (
+                    #{name},
+                    #{fundCompany.id},
+                    #{fundHandlerCode}
+                  )
+    </insert>
+
+    <update id="edit" parameterType="com.jxnu.it.business.model.FundHandler">
+         UPDATE
+             tbl_fund_handler
+           SET
+             name=#{name},
+             fund_company_id=#{fundCompany.id},
+             fund_handler_code=#{fundHandlerCode}
+          WHERE
+             id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+         DELETE
+         FROM
+            tbl_fund_handler
+         where id=#{id}
+    </delete>
+</mapper>

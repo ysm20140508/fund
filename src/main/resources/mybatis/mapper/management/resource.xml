@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="resource">
+    <resultMap id="resourceMap" type="com.jxnu.it.management.model.Resource">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="path" column="path"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_ime"/>
+        <association property="parent" column="parent_id" select="resource.find"/>
+        <association property="operate" resultMap="operateMap" />
+    </resultMap>
+
+    <resultMap id="operateMap" type="com.jxnu.it.management.model.Operate">
+        <result property="query" column="query_operate" />
+        <result property="edit" column="edit_operate" />
+        <result property="delete" column="delete_operate"/>
+        <result property="create" column="create_operate"/>
+    </resultMap>
+
+    <select id="getAllParentResource" resultMap="resourceMap">
+         SELECT
+            id,
+            name,
+            path,
+            parent_id,
+            create_time,
+            update_time
+        FROM
+            tbl_management_resource_info
+        WHERE
+            parent_id IS NULL
+         ORDER BY create_time desc
+    </select>
+
+    <select id="getRoleParentResource" parameterType="java.lang.Integer" resultMap="resourceMap">
+           SELECT
+            id,
+            name,
+            path,
+            parent_id,
+            create_time,
+            update_time
+        FROM
+            tbl_management_resource_info
+         WHERE
+             id IN
+              (
+               SELECT
+                  parent_id
+                FROM
+                  tbl_management_resource_info
+               WHERE
+                  id IN
+                   (
+                      SELECT
+                         resource_id
+                       FROM
+                         tbl_management_role_resource
+                     WHERE
+                         role_id = #{roleId}
+                   )
+              )
+         ORDER BY `index`,parent_id
+    </select>
+
+    <select id="find" parameterType="java.lang.Integer" resultMap="resourceMap">
+        SELECT
+            id,
+            name,
+            path,
+            parent_id,
+            create_time,
+            update_time
+        FROM
+            tbl_management_resource_info
+        WHERE
+            id = #{id}
+    </select>
+
+    <select id="queryRoleResource" parameterType="java.lang.Integer" resultMap="resourceMap">
+         SELECT
+             a.id,
+             b.role_id,
+             a.name,
+             a.path,
+             a.parent_id,
+             a.create_time,
+             a.update_time,
+             b.create_operate,
+             b.query_operate,
+             b.edit_operate,
+             b.delete_operate
+          FROM
+             tbl_management_resource_info a,tbl_management_role_resource b
+          WHERE
+            a.id = b.resource_id
+          AND b.role_id = #{id}
+          ORDER BY `index`,order_index,parent_id
+    </select>
+
+    <select id="getRoleResource" parameterType="java.lang.Integer" resultMap="resourceMap">
+        SELECT
+            a.id,
+            b.role_id,
+            a.name,
+            a.path,
+            a.parent_id,
+            a.create_time,
+            a.update_time,
+            IFNULL(b.create_operate,'0') create_operate,
+            IFNULL(b.query_operate,'0') query_operate,
+            IFNULL(b.edit_operate,'0') edit_operate,
+            IFNULL(b.delete_operate,'0') delete_operate
+        FROM
+            tbl_management_resource_info a
+            LEFT JOIN tbl_management_role_resource b ON a.id = b.resource_id AND b.role_id = #{id}
+        ORDER BY `index`,parent_id,create_time desc
+    </select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="resourceMap">
+        SELECT
+            id,
+            name,
+            path,
+            parent_id,
+            create_time,
+            update_time
+        FROM
+            tbl_management_resource_info
+        <where>
+            <if test="null != id">
+                AND id = #{id}
+            </if>
+            <if test="null != parentId">
+               AND parent_id = #{parentId}
+            </if>
+            <if test="null != name and name !=''">
+                AND name LIKE CONCAT('%',#{name},'%')
+            </if>
+        </where>
+          ORDER BY `index`,parent_id,create_time desc
+        <if test="null != startIndex">
+           LIMIT #{startIndex},#{pageSize}
+        </if>
+    </select>
+
+    <insert id="create" parameterType="com.jxnu.it.management.model.Resource" useGeneratedKeys="true"
+    keyProperty="id" keyColumn="id">
+         INSERT IGNORE INTO
+            tbl_management_resource_info
+            (
+               name,
+               path,
+               parent_id,
+               `index`
+            )
+         VALUES
+            (
+              #{name,jdbcType=VARCHAR},
+              #{path,jdbcType=VARCHAR},
+              #{parent.id,jdbcType=INTEGER},
+              #{index,jdbcType=INTEGER}
+            )
+    </insert>
+
+    <insert id="createRoleResource" parameterType="com.jxnu.it.management.model.Role">
+        INSERT INTO
+             tbl_management_role_resource
+             (
+                role_id,
+                resource_id,
+                create_operate,
+                edit_operate,
+                delete_operate,
+                query_operate
+             )
+          VALUES
+             <foreach collection="resources" separator="),(" open="(" close=")" item="r">
+                 #{id},#{r.id},#{r.operate.create},#{r.operate.edit},#{r.operate.delete},#{r.operate.query}
+             </foreach>
+    </insert>
+
+    <update id="updateIndex" parameterType="com.jxnu.it.management.model.Resource">
+          UPDATE
+             tbl_management_resource_info
+           SET
+              `index` = #{index}
+          WHERE
+              id = #{id}
+    </update>
+
+    <update id="edit" parameterType="com.jxnu.it.management.model.Resource">
+          UPDATE
+             tbl_management_resource_info
+           SET
+             <if test="null != name and name !=''">
+                name = #{name},
+             </if>
+             <if test="null != parent">
+                parent_id = #{parent.id},
+             </if>
+            <if test="null != path and path !=''">
+                path = #{path},
+            </if>
+            <if test="null != index">
+                `index` = #{index},
+            </if>
+             update_time = NOW()
+          WHERE
+             id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+          DELETE FROM
+              tbl_management_resource_info
+            WHERE
+              id = #{id}
+    </delete>
+
+    <delete id="deleteRoleAllResource" parameterType="java.lang.Integer">
+          DELETE FROM
+              tbl_management_role_resource
+            WHERE
+              role_id = #{id}
+    </delete>
+
+    <delete id="deleteDeployAllResource" parameterType="java.lang.Integer">
+            DELETE FROM
+              tbl_management_role_resource
+            WHERE
+              resource_id = #{id}
+    </delete>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <mappers>
+        <mapper resource="mybatis/mapper/management/role.xml"/>
+        <mapper resource="mybatis/mapper/management/user.xml"/>
+        <mapper resource="mybatis/mapper/management/resource.xml"/>
+        <mapper resource="mybatis/mapper/business/fund.xml"/>
+        <mapper resource="mybatis/mapper/business/fund-company.xml"/>
+        <mapper resource="mybatis/mapper/business/fund-handler.xml"/>
+        <mapper resource="mybatis/mapper/business/fund-order.xml"/>
+        <mapper resource="mybatis/mapper/business/fund-new.xml"/>
+        <mapper resource="mybatis/mapper/business/fund-rank.xml"/>
+    </mappers>
+</configuration>
