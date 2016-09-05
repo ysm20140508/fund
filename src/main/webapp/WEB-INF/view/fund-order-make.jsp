@@ -30,7 +30,7 @@
     <script type="text/javascript" src="/static/js/H-ui.admin.js"></script>
     <script type="text/javascript" src="/scripts/angularjs/angular.js"></script>
     <script type="text/javascript" src="/static/lib/laypage/1.2/laypage.js"></script>
-    <script type="text/javascript" src="/scripts/business/fund-order.js"></script>
+    <script type="text/javascript" src="/scripts/business/fund-order-make.js"></script>
     <title>销量管理平台</title>
 </head>
 <body ng-app="channelApp">
@@ -43,10 +43,6 @@
             </button>
         </c:if>
     </div>
-    <div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"> <a href="javascript:;"
-                                                                onclick="consumer_add('添加基金公司','/fund-order/create/init','800','500')"
-                                                                class="btn btn-primary radius"><i class="Hui-iconfont">
-        &#xe600;</i> 添加订单</a></span></div>
     <table class="table table-border table-bordered table-hover table-bg table-sort">
         <thead>
         <tr>
@@ -57,14 +53,15 @@
             <th width="10%">基金</th>
             <th width="10%">基金名称</th>
             <th width="10%">投资金额</th>
-            <th width="10%">买入净值</th>
+            <th width="5%">买入净值</th>
             <th width="7%">最低卖出净值</th>
             <th width="7%">最高卖出份额</th>
             <th width="7%">最高卖出净值</th>
             <th width="7%">最低卖出份额</th>
             <th width="5%">买入时间</th>
+            <th width="5%">卖出时间</th>
             <th width="4%">比例</th>
-            <th width="17%">操作</th>
+            <th width="17%">份额</th>
         </tr>
         </thead>
         <tbody>
@@ -79,27 +76,10 @@
             <td>{{p.endSaleNetWorth | number:4}}</td>
             <td>{{p.endSaleShare | number:4}}</td>
             <td>{{p.startTime}}</td>
+            <td>{{p.saleTime}}</td>
             <td>{{p.ratio}}</td>
             <td class="td-manage">
-                <c:if test="${null != operate && operate.edit == 1}">
-                    <a title="编辑" ng-if="p.status==0" href="javascript:;" ng-click="edit(p)" class="ml-5"
-                       style="text-decoration:none">
-                        <i class="Hui-iconfont">&#xe6df;</i>
-                    </a>
-                </c:if>
-                <c:if test="${null != operate && operate.delete == 1}">
-                    <a title=""  ng-if="p.status==0" target="_blank" href='http://fund.eastmoney.com/{{p.fund.code | numberOrFormat}}.html?spm=search'
-                       class="ml-5"
-                       style="text-decoration:none"><i class="Hui-iconfont">&#xe666;</i>
-                    </a>
-                </c:if>
                 <strong ng-if="p.status==1" class="c-red f-11">( {{p.makeShare|number:2}} | {{p.saleMoney}} )</strong>
-                <c:if test="${null != operate && operate.delete == 1}">
-                    <a title="卖出" ng-if="p.status==0" ng-click="sale(p)" href="javascript:;" class="ml-5"
-                       style="text-decoration:none">
-                        <i class="Hui-iconfont">&#xe6b8;</i>
-                    </a>
-                </c:if>
             </td>
         </tr>
         </tbody>

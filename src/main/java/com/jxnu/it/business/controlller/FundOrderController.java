@@ -35,6 +35,11 @@ public class FundOrderController {
 		return "fund-order";
 	}
 
+	@RequestMapping(path = "/fund-order-make")
+	public String make() {
+		return "fund-order-make";
+	}
+
 	@RequestMapping(path = "/fund-order/create/init")
 	public String createPage() {
 		return "fund-order-add";
@@ -123,7 +128,20 @@ public class FundOrderController {
 		if (null == query) {
 			query = new Query();
 		}
-		List<FundOrder> resources = fundOrderService.query(query.getKeyword(), null, query.getPage(), query.getPageSize());
+		List<FundOrder> resources = fundOrderService.query(query.getKeyword(), "0", query.getPage(), query.getPageSize());
+
+		return resources;
+	}
+
+	@RequestMapping(path = "/fund-order/make")
+	@ResponseBody
+	public List<FundOrder> make(@RequestBody(required = false) Query query) {
+		logger.debug("query:{}.", query);
+
+		if (null == query) {
+			query = new Query();
+		}
+		List<FundOrder> resources = fundOrderService.query(query.getKeyword(), "1", query.getPage(), query.getPageSize());
 
 		return resources;
 	}

@@ -80,7 +80,7 @@
         <if test="null != startIndex">
             LIMIT #{startIndex},#{pageSize}
         </if>
-        ORDER BY is_new DESC, create_time ASC
+        ORDER BY  start_time ASC
     </select>
 
     <insert id="create" parameterType="com.jxnu.it.business.model.FundOrder">
