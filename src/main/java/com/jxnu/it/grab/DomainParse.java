@@ -1,6 +1,6 @@
 package com.jxnu.it.grab;
 
-import com.jxnu.it.business.model.FundNew;
+import com.jxnu.it.business.model.fund.FundNew;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

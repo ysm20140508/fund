@@ -1,7 +1,7 @@
 package com.jxnu.it.grab.Thread;
 
-import com.jxnu.it.business.model.FundNew;
-import com.jxnu.it.business.store.FundStore;
+import com.jxnu.it.business.model.fund.FundNew;
+import com.jxnu.it.business.store.fund.FundStore;
 import com.jxnu.it.grab.DomainParse;
 import com.jxnu.it.grab.FundConfig;
 import org.apache.commons.lang3.StringUtils;

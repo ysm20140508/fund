@@ -1,14 +1,13 @@
 package com.jxnu.it.util;
 
-import com.jxnu.it.business.model.FundNetWorth;
-import com.jxnu.it.business.model.FundRank;
+import com.jxnu.it.business.model.fund.FundNetWorth;
+import com.jxnu.it.business.model.fund.FundRank;
 import com.jxnu.it.constant.Constants;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.xml.stream.events.EndElement;
 import java.util.ArrayList;
 import java.util.List;
 

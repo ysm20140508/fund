@@ -11,5 +11,7 @@
         <mapper resource="mybatis/mapper/business/fund-order.xml"/>
         <mapper resource="mybatis/mapper/business/fund-new.xml"/>
         <mapper resource="mybatis/mapper/business/fund-rank.xml"/>
+        <mapper resource="mybatis/mapper/business/bill-good.xml"/>
+        <mapper resource="mybatis/mapper/business/bill-order.xml"/>
     </mappers>
 </configuration>

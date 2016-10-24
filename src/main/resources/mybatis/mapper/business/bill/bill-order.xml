@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="billOrder">
+    <resultMap id="billOrderMap" type="com.jxnu.it.business.model.bill.BillOrder">
+        <id property="id" column="id"/>
+        <result property="goodId" column="good_id"/>
+        <result property="total" column="total"/>
+        <result property="num" column="num"/>
+        <result property="time" column="time"/>
+        <association property="good" column="good_id" select="billGood.find"/>
+    </resultMap>
+
+
+    <select id="query" resultMap="billOrderMap" parameterType="java.util.Map">
+        SELECT
+        a.id,a.create_time,a.good_id,a.num,a.total,a.update_time,a."time"
+        FROM tbl_bill_order a
+        <where>
+            <if test="startDate !=null and startDate !=''">
+                and a.create_time >= #{startDate}
+            </if>
+            <if test="endDate != null and endDate !=''">
+                and #{endDate} >= a.create_time
+            </if>
+            <if test="null != startIndex">
+                LIMIT #{startIndex},#{pageSize}
+            </if>
+        </where>
+    </select>
+
+    <select id="find" resultMap="billOrderMap" parameterType="java.lang.Integer">
+        SELECT
+        a.id,a.create_time,a.good_id,a.num,a.total,a.update_time,a."time"
+        FROM tbl_bill_order a
+        WHERE id=#{id}
+    </select>
+
+    <insert id="create" parameterType="com.jxnu.it.business.model.bill.BillOrder">
+        INSERT INTO tbl_bill_order
+                    (
+                     good_id,
+                     total,
+                     num,
+                     update_time,
+                     "time"
+                    )
+                    VALUES
+                    (
+                     #{goodId},
+                     #{total},
+                     #{num},
+                     now(),
+                     #{time}
+                    )
+    </insert>
+
+    <update id="edit" parameterType="com.jxnu.it.business.model.bill.BillOrder">
+        UPDATE tbl_bill_order
+        SET total=#{total},
+            good_id=#{goodId},
+            num=#{num},
+            "time"=#{time}
+        WHERE id=#{id}
+    </update>
+</mapper>

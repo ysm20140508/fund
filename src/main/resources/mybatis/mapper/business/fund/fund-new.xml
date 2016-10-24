@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fundNew">
+    <resultMap id="fundNewMap" type="com.jxnu.it.business.model.fund.FundNew">
+        <id property="id" column="id"/>
+        <result property="code" column="code"/>
+        <result column="fund_name" property="fundName"/>
+        <result column="fund_company_name" property="fundCompanyName"/>
+        <result column="fund_company_code" property="fundCompanyCode"/>
+        <result column="period" property="period"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <select id="query" parameterType="java.util.Map" resultMap="fundNewMap">
+        SELECT
+        id,
+        code,
+        fund_name,
+        fund_company_name,
+        fund_company_code,
+        period,
+        status
+        FROM
+        tbl_fund_new
+        WHERE
+        status=0
+        <if test="null != startIndex">
+            LIMIT #{startIndex},#{pageSize}
+        </if>
+    </select>
+
+    <update id="edit" parameterType="java.lang.Integer">
+         UPDATE
+             tbl_fund_new
+           SET
+             status=1
+          WHERE
+             id = #{id}
+    </update>
+
+</mapper>

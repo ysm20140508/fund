@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="billGood">
+    <resultMap id="billGoodMap" type="com.jxnu.it.business.model.bill.BillGood">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="price" column="scale"/>
+        <result property="fromArea" column="from_area"/>
+        <result property="toArea" column="to_area"/>
+        <result property="brand" column="brand"/>
+        <result property="type" column="type"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="query" resultMap="billGoodMap" parameterType="java.util.Map">
+         SELECT
+              a.name,a.price,a.from_area,a.to_area,a.brand,a.type,a.create_time,a.update_time
+         FROM tbl_bill_good a
+         <where>
+             <if test="brand != null and brand !=''">
+                 and a.brand=#{brand}
+             </if>
+             <if test="type !=null and type !=''">
+                 and a.type=#{type}
+             </if>
+         </where>
+        <if test="null != startIndex">
+            LIMIT #{startIndex},#{pageSize}
+        </if>
+    </select>
+
+    <select id="find" resultMap="billGoodMap" parameterType="java.lang.Integer">
+        SELECT
+            name,price,from_area,to_area,brand,type,create_time,update_time
+        FROM tbl_bill_good
+        WHERE  id=#{id}
+    </select>
+
+    <insert id="create" parameterType="com.jxnu.it.business.model.bill.BillGood">
+        INSERT  into tbl_bill_good
+                (
+                 name,
+                 price,
+                 from_area,
+                 to_area,
+                 brand,
+                 type,
+                 update_time
+                )
+                VALUES
+                (
+                 #{name},
+                 #{price},
+                 #{fromArea},
+                 #{toArea},
+                 #{brand},
+                 #{type},
+                 now()
+                )
+    </insert>
+
+    <update id="edit" parameterType="com.jxnu.it.business.model.bill.BillGood">
+        UPDATE tbl_bill_good
+        SET
+            name=#{name},
+            price=#{price},
+            from_area=#{priceArea},
+            to_area=#{toArea},
+            brand=#{brand},
+            type=#{type},
+            update_time=now()
+        WHERE id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+       DELETE FROM tbl_bill_good
+       WHERE  id=#{id}
+    </delete>
+
+</mapper>

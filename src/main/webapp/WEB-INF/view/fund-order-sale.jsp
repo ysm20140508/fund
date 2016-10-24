@@ -29,7 +29,7 @@
     <script type="text/javascript" src="/static/js/H-ui.js"></script>
     <script type="text/javascript" src="/static/js/H-ui.admin.js"></script>
     <script type="text/javascript" src="/scripts/angularjs/angular.js"></script>
-    <script type="text/javascript" src="/scripts/business/fund-order-sale.js"></script>
+    <script type="text/javascript" src="/scripts/business/fund/fund-order-sale.js"></script>
     <title>销量管理平台</title>
 </head>
 <body ng-app="channelApp">

@@ -1,16 +1,13 @@
 package com.jxnu.it.grab.Thread;
 
-import com.jxnu.it.business.store.FundRankStore;
-import com.jxnu.it.business.store.FundStore;
+import com.jxnu.it.business.store.fund.FundRankStore;
+import com.jxnu.it.business.store.fund.FundStore;
 import com.jxnu.it.constant.Constants;
 import com.jxnu.it.grab.FundConfig;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Component

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fundOrder">
+    <resultMap id="fundOrderMap" type="com.jxnu.it.business.model.fund.FundOrder">
+        <id property="id" column="id"/>
+        <result property="money" column="money"/>
+        <result property="startNetWorth" column="start_net_worth"/>
+        <result property="startSaleNetWorth" column="start_sale_net_worth"/>
+        <result property="endSaleNetWorth" column="end_sale_net_worth"/>
+        <result property="status" column="status"/>
+        <result property="status" column="status"/>
+        <result property="startSaleShare" column="start_sale_share"/>
+        <result property="endSaleShare" column="end_sale_share"/>
+        <result property="saleNetWorth" column="sale_net_worth"/>
+        <result property="makeShare" column="make_share"/>
+        <result property="saleShare" column="sale_share"/>
+        <result property="ratio" column="ratio"/>
+        <result property="createTime" column="create_time"/>
+        <result property="startTime" column="start_time"/>
+        <result property="saleTime" column="sale_time"/>
+        <result property="saleMoney" column="sale_money"/>
+        <association property="fund" column="code" select="fund.find"/>
+    </resultMap>
+
+    <resultMap id="funMarkPointDataMap" type="com.jxnu.it.business.model.fund.FundMarkPointData">
+        <result property="name" column="name"/>
+        <result property="value" column="start_net_worth"/>
+        <result property="xAxis" column="time"/>
+        <result property="yAxis" column="start_net_worth"/>
+    </resultMap>
+
+    <select id="find" parameterType="java.lang.Integer" resultMap="fundOrderMap">
+         SELECT
+            id,
+            money,
+            start_net_worth,
+            code,
+            start_sale_net_worth,
+            end_sale_net_worth,
+            start_time,
+            sale_time,
+            status,
+            create_time,
+            sale_money
+         FROM
+            tbl_fund_order
+         WHERE
+            id = #{id}
+    </select>
+
+    <select id="query" parameterType="java.util.Map" resultMap="fundOrderMap">
+        SELECT
+        a.id,
+        a.money,
+        a.start_net_worth,
+        a.code,
+        a.start_sale_net_worth,
+        a.end_sale_net_worth,
+        a.start_sale_share,
+        a.end_sale_share,
+        a.status,
+        a.sale_share,
+        a.start_time,
+        a.sale_time,
+        a.sale_net_worth,
+        a.make_share,
+        a.create_time,
+        a.sale_money,
+        b.ratio
+        FROM
+        tbl_fund_order a LEFT JOIN tbl_fund_order_ratio b on a.id=b.fund_order_id
+        <where>
+            <if test="null != code and code !=''">
+                AND a.code=#{code}
+            </if>
+            <if test="status != null and status !=''">
+                and a.status=#{status}
+            </if>
+        </where>
+        <if test="null != startIndex">
+            LIMIT #{startIndex},#{pageSize}
+        </if>
+        ORDER BY  start_time ASC
+    </select>
+
+    <insert id="create" parameterType="com.jxnu.it.business.model.fund.FundOrder">
+          INSERT IGNORE INTO
+                  tbl_fund_order
+                  (
+                    money,
+                    start_net_worth,
+                    code,
+                    start_sale_net_worth,
+                    end_sale_net_worth,
+                    start_sale_share,
+                    end_sale_share,
+                    status,
+                    sale_money,
+                    start_time,
+                    sale_time
+                  )
+               VALUES
+                  (
+                   #{money},
+                   #{startNetWorth},
+                   #{fund.code},
+                   #{startSaleNetWorth},
+                   #{endSaleNetWorth},
+                   #{startSaleShare},
+                   #{endSaleShare},
+                   0,
+                   #{saleMoney},
+                   #{startTime},
+                   #{saleTime}
+                  )
+    </insert>
+
+    <update id="edit" parameterType="com.jxnu.it.business.model.fund.FundOrder">
+         UPDATE
+              tbl_fund_order
+           SET
+             money=#{money},
+             start_net_worth=#{startNetWorth},
+             start_sale_net_worth=#{startSaleNetWorth},
+             end_sale_net_worth=#{endSaleNetWorth},
+             start_sale_share=#{startSaleShare},
+             end_sale_share=#{endSaleShare},
+             code=#{fund.code},
+             status = #{status},
+             sale_time=#{saleTime},
+             update_time = now()
+          WHERE
+             id = #{id}
+    </update>
+
+    <update id="update" parameterType="com.jxnu.it.business.model.fund.FundOrder">
+         UPDATE
+            tbl_fund_order
+         SET  status=1,
+              make_share=#{makeShare},
+              sale_net_worth=#{saleNetWorth},
+              sale_share=#{saleShare},
+              sale_time=#{saleTime},
+              sale_money=#{saleMoney}
+         where id=#{id}
+    </update>
+
+    <insert id="insertFundOrderRatio" parameterType="com.jxnu.it.business.model.fund.FundOrderRatio">
+         INSERT INTO  tbl_fund_order_ratio
+              (fund_order_id, code,net_worth, ratio,update_time)
+              VALUES
+              (
+               #{fundOrderId},
+               #{code},
+               #{netWorth},
+               #{ratio},
+               now()
+              ) ON DUPLICATE KEY UPDATE ratio=VALUES(ratio),update_time=VALUES(update_time),net_worth=VALUES(net_worth)
+    </insert>
+
+    <select id="queryCodeStartSale" resultMap="funMarkPointDataMap" parameterType="java.lang.Integer">
+        SELECT
+            CASE a.status
+            WHEN 0 THEN a.start_time
+            END as time,
+            a.start_net_worth,
+            CASE a.status
+            WHEN 0 THEN '买入'
+            END as name
+        FROM
+	        tbl_fund_order a
+        where  a.code=#{code}
+        and a.status=0
+    </select>
+
+
+</mapper>
