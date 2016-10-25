@@ -3,17 +3,16 @@
 <mapper namespace="billOrder">
     <resultMap id="billOrderMap" type="com.jxnu.it.business.model.bill.BillOrder">
         <id property="id" column="id"/>
-        <result property="goodId" column="good_id"/>
         <result property="total" column="total"/>
         <result property="num" column="num"/>
         <result property="time" column="time"/>
+        <result property="type" column="type"/>
         <association property="good" column="good_id" select="billGood.find"/>
     </resultMap>
 
-
     <select id="query" resultMap="billOrderMap" parameterType="java.util.Map">
         SELECT
-        a.id,a.create_time,a.good_id,a.num,a.total,a.update_time,a."time"
+        a.id,a.create_time,a.good_id,a.num,a.total,a.update_time,a.time,a.type
         FROM tbl_bill_order a
         <where>
             <if test="startDate !=null and startDate !=''">
@@ -30,7 +29,7 @@
 
     <select id="find" resultMap="billOrderMap" parameterType="java.lang.Integer">
         SELECT
-        a.id,a.create_time,a.good_id,a.num,a.total,a.update_time,a."time"
+        a.id,a.create_time,a.good_id,a.num,a.total,a.update_time,a.time,a.type
         FROM tbl_bill_order a
         WHERE id=#{id}
     </select>
@@ -42,24 +41,32 @@
                      total,
                      num,
                      update_time,
-                     "time"
+                     time,
+                     type
                     )
                     VALUES
                     (
-                     #{goodId},
+                     #{good.id},
                      #{total},
                      #{num},
                      now(),
-                     #{time}
+                     #{time},
+                     #{type}
                     )
     </insert>
 
     <update id="edit" parameterType="com.jxnu.it.business.model.bill.BillOrder">
         UPDATE tbl_bill_order
         SET total=#{total},
-            good_id=#{goodId},
+            good_id=#{good.id},
             num=#{num},
-            "time"=#{time}
+            time=#{time},
+            type=#{type}
         WHERE id=#{id}
     </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE  FROM  tbl_bill_order
+        WHERE id=#{id}
+    </delete>
 </mapper>

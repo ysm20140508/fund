@@ -9,12 +9,12 @@ import java.util.Date;
  * @date 2016-10-24
  */
 public class BillOrder {
-    private Integer id;          //订单编号
-    private String goodId;      //商品Id
+    private Integer id;         //订单编号
     private Float total;        //商品总金额
     private Integer num;        //商品数量
     private String time;        //时间
     private BillGood good;      //商品
+    private Integer type;       //类型 0:充值  1:消费
     private Date createTime;    //创建时间
     private Date updateTime;    //修改时间
 
@@ -25,15 +25,6 @@ public class BillOrder {
     public void setId(Integer id) {
         this.id = id;
     }
-
-    public String getGoodId() {
-        return goodId;
-    }
-
-    public void setGoodId(String goodId) {
-        this.goodId = goodId;
-    }
-
 
     public void setTotal(Float total) {
         this.total = total;
@@ -83,15 +74,23 @@ public class BillOrder {
         this.time = time;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "BillOrder{" +
                 "id=" + id +
-                ", goodId='" + goodId + '\'' +
                 ", total=" + total +
                 ", num=" + num +
                 ", time='" + time + '\'' +
                 ", good=" + good +
+                ", type=" + type +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';

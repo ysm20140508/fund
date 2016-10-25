@@ -91,16 +91,6 @@
                 <div class="col-4"></div>
             </div>
             <div class="row cl">
-                <label class="form-label col-3"><span class="c-red">*</span>成立时间：</label>
-
-                <div class="formControls col-5">
-                    <input class="input-text" value=""
-                           ng-model="form.createTime" width="500">
-                </div>
-                <div class="col-4"></div>
-            </div>
-
-            <div class="row cl">
                 <div class="col-9 col-offset-3">
                     <input class="btn btn-primary radius" type="submit" ng-click="create()"
                            value="&nbsp;&nbsp;提交&nbsp;&nbsp;">

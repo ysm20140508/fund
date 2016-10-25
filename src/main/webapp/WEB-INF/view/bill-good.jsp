@@ -46,21 +46,21 @@
     <div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"> <a href="javascript:;"
                                                                 onclick="consumer_add('添加商品','/bill-good/create/init','800','500')"
                                                                 class="btn btn-primary radius"><i class="Hui-iconfont">
-        &#xe600;</i> 添加基金公司</a></span></div>
+        &#xe600;</i> 添加商品</a></span></div>
     <table class="table table-border table-bordered table-hover table-bg table-sort">
         <thead>
         <tr>
             <th scope="col" colspan="11">数据列表</th>
         </tr>
         <tr class="text-c">
-            <th width="40%">名称</th>
-            <th width="20%">价格</th>
-            <th width="20%">起始地</th>
+            <th width="20%">名称</th>
+            <th width="10%">价格</th>
+            <th width="10%">起始地</th>
             <th width="10">目的地</th>
             <th width="10">商品类型</th>
             <th width="10">品牌</th>
             <th width="10">创建时间</th>
-            <th width="10">操作</th>
+            <th width="20">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -71,7 +71,7 @@
             <td>{{p.toArea}}</td>
             <td>{{p.type}}</td>
             <td>{{p.brand}}</td>
-            <td>{{p.createTime | date:'yyyy-MM-dd'}}</td>
+            <td>{{p.createTime}}</td>
             <td class="td-manage">
                 <c:if test="${null != operate && operate.edit == 1}">
                     <a title="编辑" href="javascript:;" ng-click="edit(p)" class="ml-5" style="text-decoration:none">
@@ -82,12 +82,6 @@
                     <a title="删除" ng-click="del(p)" href="javascript:;" class="ml-5"
                        style="text-decoration:none">
                         <i class="Hui-iconfont">&#xe6e2;</i>
-                    </a>
-                </c:if>
-                <c:if test="${null != operate && operate.delete == 1}">
-                    <a title="" target="_blank" href='http://fund.eastmoney.com/company/{{p.fundCompanyCode}}.html'
-                       class="ml-5"
-                       style="text-decoration:none"><i class="Hui-iconfont">&#xe666;</i>
                     </a>
                 </c:if>
             </td>

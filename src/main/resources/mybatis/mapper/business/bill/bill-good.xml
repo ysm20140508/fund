@@ -15,7 +15,7 @@
 
     <select id="query" resultMap="billGoodMap" parameterType="java.util.Map">
          SELECT
-              a.name,a.price,a.from_area,a.to_area,a.brand,a.type,a.create_time,a.update_time
+              a.id,a.name,a.price,a.from_area,a.to_area,a.brand,a.type,a.create_time,a.update_time
          FROM tbl_bill_good a
          <where>
              <if test="brand != null and brand !=''">
@@ -32,7 +32,7 @@
 
     <select id="find" resultMap="billGoodMap" parameterType="java.lang.Integer">
         SELECT
-            name,price,from_area,to_area,brand,type,create_time,update_time
+            id,name,price,from_area,to_area,brand,type,create_time,update_time
         FROM tbl_bill_good
         WHERE  id=#{id}
     </select>
@@ -65,7 +65,7 @@
         SET
             name=#{name},
             price=#{price},
-            from_area=#{priceArea},
+            from_area=#{fromArea},
             to_area=#{toArea},
             brand=#{brand},
             type=#{type},
@@ -77,5 +77,4 @@
        DELETE FROM tbl_bill_good
        WHERE  id=#{id}
     </delete>
-
 </mapper>

@@ -1,5 +1,6 @@
 package com.jxnu.it.grab.Thread;
 
+import com.jxnu.it.business.store.bill.BillBalanceStore;
 import com.jxnu.it.business.store.fund.FundRankStore;
 import com.jxnu.it.business.store.fund.FundStore;
 import com.jxnu.it.constant.Constants;
@@ -18,6 +19,8 @@ public class TheadSet {
 	private FundConfig fundConfig;
 	@Resource
 	private FundRankStore fundRankStore;
+	@Resource
+	private BillBalanceStore billBalanceStore;
 
 	@PostConstruct
 	public void init() {
@@ -30,6 +33,9 @@ public class TheadSet {
 		//新基金
 		NewThread newThread =new NewThread(fundStore,fundConfig);
 		FundThreadPool.newSheduledInstance().scheduleAtFixedRate(newThread, Constants.FUND_THREAD_DEPLAY, fundConfig.getPeriod(), TimeUnit.HOURS);
+        //账单
+		BillThread billThread=new BillThread(billBalanceStore);
+		FundThreadPool.newSheduledInstance().scheduleAtFixedRate(billThread,Constants.FUND_THREAD_DEPLAY,fundConfig.getPeriod(),TimeUnit.HOURS);
 
 	}
 

@@ -1,5 +1,6 @@
 package com.jxnu.it.business.store.bill;
 
+import com.jxnu.it.business.model.bill.BillBalance;
 import com.jxnu.it.business.model.bill.BillOrder;
 import com.jxnu.it.management.store.BaseStore;
 import org.springframework.stereotype.Component;

@@ -41,8 +41,7 @@
 
                 <div class="formControls col-5">
                     <span class="select-box">
-                    <select name="business" class="select" ng-model="form.goodId">
-                        <option value="">商品</option>
+                    <select name="business" class="select" ng-model="form.good.id">
                         <option ng-repeat="option in goods" value="{{option.id}}">{{option.name}}</option>
                     </select>
                     </span>
@@ -64,6 +63,19 @@
                 <div class="formControls col-5">
                     <input class="input-text" value=""
                            ng-model="form.time" width="500">
+                </div>
+                <div class="col-4"></div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-3"><span class="c-red">*</span>类型：</label>
+
+                <div class="formControls col-5">
+                    <span class="select-box">
+                    <select name="business" class="select" ng-model="form.type">
+                        <option value="0"> 充值</option>
+                        <option value="1">消费</option>
+                    </select>
+                    </span>
                 </div>
                 <div class="col-4"></div>
             </div>

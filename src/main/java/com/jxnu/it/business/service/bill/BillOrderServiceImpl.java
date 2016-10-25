@@ -1,6 +1,8 @@
 package com.jxnu.it.business.service.bill;
 
+import com.jxnu.it.business.model.bill.BillGood;
 import com.jxnu.it.business.model.bill.BillOrder;
+import com.jxnu.it.business.store.bill.BillGoodStore;
 import com.jxnu.it.business.store.bill.BillOrderStore;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ import java.util.List;
 public class BillOrderServiceImpl implements BillOrderService {
     @Resource
     private BillOrderStore store;
+    @Resource
+    private BillGoodStore goodStore;
 
 
     @Override
@@ -29,7 +33,8 @@ public class BillOrderServiceImpl implements BillOrderService {
 
     @Override
     public Integer create(BillOrder billOrder) {
-        Float total = billOrder.getNum() * billOrder.getGood().getPrice();
+        BillGood billGood=goodStore.find(billOrder.getGood().getId());
+        Float total = billOrder.getNum() * billGood.getPrice();
         billOrder.setTotal(total);
         if (store.create(billOrder))
             return 0;
@@ -38,7 +43,8 @@ public class BillOrderServiceImpl implements BillOrderService {
 
     @Override
     public Integer edit(BillOrder billOrder) {
-        Float total = billOrder.getNum() * billOrder.getGood().getPrice();
+        BillGood billGood=goodStore.find(billOrder.getGood().getId());
+        Float total = billOrder.getNum() * billGood.getPrice();
         billOrder.setTotal(total);
         if (store.edit(billOrder))
             return 0;

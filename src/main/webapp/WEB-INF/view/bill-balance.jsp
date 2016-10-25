@@ -30,11 +30,11 @@
     <script type="text/javascript" src="/static/js/H-ui.admin.js"></script>
     <script type="text/javascript" src="/scripts/angularjs/angular.js"></script>
     <script type="text/javascript" src="/static/lib/laypage/1.2/laypage.js"></script>
-    <script type="text/javascript" src="/scripts/business/bill/bill-order.js"></script>
+    <script type="text/javascript" src="/scripts/business/bill/bill-balance.js"></script>
     <title>销量管理平台</title>
 </head>
 <body ng-app="channelApp">
-<div class="pd-20" ng-controller="bill-order">
+<div class="pd-20" ng-controller="bill-balance">
     <div class="">
         <input type="text" class="input-text" style="width:200px" placeholder="关键字" ng-model="queryForm.keyword">
         <c:if test="${null != operate && operate.query == 1}">
@@ -43,46 +43,23 @@
             </button>
         </c:if>
     </div>
-    <div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"> <a href="javascript:;"
-                                                                onclick="consumer_add('添加订单','/bill-order/create/init','800','500')"
-                                                                class="btn btn-primary radius"><i class="Hui-iconfont">
-        &#xe600;</i> 添加订单</a></span></div>
     <table class="table table-border table-bordered table-hover table-bg table-sort">
         <thead>
         <tr>
             <th scope="col" colspan="11">数据列表</th>
         </tr>
         <tr class="text-c">
-            <th width="10%">商品名称</th>
-            <th width="20%">数量</th>
-            <th width="20%">总金额</th>
-            <th width="20%">时间</th>
-            <th width="20%">类型</th>
-            <th width="10%">操作</th>
+            <th width="30%">时间</th>
+            <th width="40%">金额</th>
+            <th width="30%">类型</th>
         </tr>
         </thead>
         <tbody>
         <tr class="text-c" ng-repeat="p in items">
-            <td>{{p.good.name}}</td>
-            <td>{{p.num}}</td>
-            <td>{{p.total | number:2}}</td>
-            <td>{{p.time}}</td>
+            <td>{{p.time | date:'yyyy-MM'}}</td>
+            <td>{{p.balance}}</td>
             <td>
-                <div ng-if="p.type==1">消费</div>
-                <div ng-if="p.type==0">充值</div>
-            </td>
-            <td class="td-manage">
-                <c:if test="${null != operate && operate.edit == 1}">
-                    <a title="编辑" href="javascript:;" ng-click="edit(p)" class="ml-5" style="text-decoration:none">
-                        <i class="Hui-iconfont">&#xe6df;</i>
-                    </a>
-                </c:if>
-                <c:if test="${null != operate && operate.delete == 1}">
-                    <a title="删除" ng-click="del(p)" href="javascript:;" class="ml-5"
-                       style="text-decoration:none">
-                        <i class="Hui-iconfont">&#xe6e2;</i>
-                    </a>
-                </c:if>
+                <div ng="p.type==0">月</div>
             </td>
         </tr>
         </tbody>
