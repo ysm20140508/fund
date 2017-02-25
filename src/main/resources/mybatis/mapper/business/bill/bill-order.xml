@@ -25,6 +25,7 @@
                 LIMIT #{startIndex},#{pageSize}
             </if>
         </where>
+        ORDER BY a.time DESC
     </select>
 
     <select id="find" resultMap="billOrderMap" parameterType="java.lang.Integer">

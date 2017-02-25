@@ -53,8 +53,8 @@
             <th scope="col" colspan="11">数据列表</th>
         </tr>
         <tr class="text-c">
-            <th width="10%">商品名称</th>
-            <th width="20%">数量</th>
+            <th width="20%">商品名称</th>
+            <th width="10%">数量</th>
             <th width="20%">总金额</th>
             <th width="20%">时间</th>
             <th width="20%">类型</th>

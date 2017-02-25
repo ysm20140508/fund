@@ -57,27 +57,27 @@
             <th width="10%">基金</th>
             <th width="10%">基金名称</th>
             <th width="10%">投资金额</th>
-            <th width="10%">买入净值</th>
             <th width="7%">最低卖出净值</th>
             <th width="7%">最高卖出份额</th>
             <th width="7%">最高卖出净值</th>
             <th width="7%">最低卖出份额</th>
-            <th width="5%">买入时间</th>
+            <th width="9%">买入净值</th>
+            <th width="8%">买入时间</th>
             <th width="4%">比例</th>
             <th width="17%">操作</th>
         </tr>
         </thead>
         <tbody>
         <tr class="text-c" ng-repeat="p in items">
-            <td>{{p.id}}</td>
+            <td>{{$index+1}}</td>
             <td>{{p.fund.code | numberOrFormat}}</td>
             <td>{{p.fund.name}}</td>
             <td>{{p.money | number:2}}</td>
-            <td>{{p.startNetWorth | number:4}}</td>
             <td>{{p.startSaleNetWorth | number:4}}</td>
             <td>{{p.startSaleShare | number:4}}</td>
             <td>{{p.endSaleNetWorth | number:4}}</td>
             <td>{{p.endSaleShare | number:4}}</td>
+            <td>{{p.startNetWorth | number:4}}</td>
             <td>{{p.startTime}}</td>
             <td>{{p.ratio}}</td>
             <td class="td-manage">

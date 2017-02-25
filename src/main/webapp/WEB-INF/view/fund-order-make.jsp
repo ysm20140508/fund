@@ -46,37 +46,39 @@
     <table class="table table-border table-bordered table-hover table-bg table-sort">
         <thead>
         <tr>
-            <th scope="col" colspan="12">数据列表</th>
+            <th scope="col" colspan="14">数据列表</th>
         </tr>
         <tr class="text-c">
-            <th width="4%">编号</th>
+            <th width="2%">编号</th>
             <th width="10%">基金</th>
-            <th width="10%">基金名称</th>
+            <th width="12%">基金名称</th>
             <th width="10%">投资金额</th>
-            <th width="5%">买入净值</th>
             <th width="7%">最低卖出净值</th>
             <th width="7%">最高卖出份额</th>
             <th width="7%">最高卖出净值</th>
             <th width="7%">最低卖出份额</th>
             <th width="5%">买入时间</th>
             <th width="5%">卖出时间</th>
+            <th width="5%">买入净值</th>
+            <th width="5%">卖出净值</th>
             <th width="4%">比例</th>
-            <th width="17%">份额</th>
+            <th width="12%">份额</th>
         </tr>
         </thead>
         <tbody>
         <tr class="text-c" ng-repeat="p in items">
-            <td>{{p.id}}</td>
+            <td>{{$index+1}}</td>
             <td>{{p.fund.code | numberOrFormat}}</td>
             <td>{{p.fund.name}}</td>
             <td>{{p.money | number:2}}</td>
-            <td>{{p.startNetWorth | number:4}}</td>
             <td>{{p.startSaleNetWorth | number:4}}</td>
             <td>{{p.startSaleShare | number:4}}</td>
             <td>{{p.endSaleNetWorth | number:4}}</td>
             <td>{{p.endSaleShare | number:4}}</td>
             <td>{{p.startTime}}</td>
             <td>{{p.saleTime}}</td>
+            <td>{{p.startNetWorth | number:4}}</td>
+            <td>{{p.saleNetWorth | number:4}}</td>
             <td>{{p.ratio}}</td>
             <td class="td-manage">
                 <strong ng-if="p.status==1" class="c-red f-11">( {{p.makeShare|number:2}} | {{p.saleMoney}} )</strong>

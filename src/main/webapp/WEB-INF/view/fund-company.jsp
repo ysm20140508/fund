@@ -30,7 +30,7 @@
     <script type="text/javascript" src="/static/js/H-ui.admin.js"></script>
     <script type="text/javascript" src="/scripts/angularjs/angular.js"></script>
     <script type="text/javascript" src="/static/lib/laypage/1.2/laypage.js"></script>
-    <script type="text/javascript" src="/scripts/business/bill/bill-good.js"></script>
+    <script type="text/javascript" src="/scripts/business/fund/fund-company.js"></script>
     <title>销量管理平台</title>
 </head>
 <body ng-app="channelApp">
@@ -53,9 +53,9 @@
             <th scope="col" colspan="11">数据列表</th>
         </tr>
         <tr class="text-c">
-            <th width="40%">基金公司名称</th>
+            <th width="20%">基金公司名称</th>
             <th width="20%">注册资金</th>
-            <th width="20%">地址</th>
+            <th width="40%">地址</th>
             <th width="10">成立时间</th>
             <th width="10">操作</th>
         </tr>
