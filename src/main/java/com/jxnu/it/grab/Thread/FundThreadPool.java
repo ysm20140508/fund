@@ -4,10 +4,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 public class FundThreadPool {
-	public static final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5, new GrabTheadNameFactory("fund"));
+	public static final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(10, new GrabTheadNameFactory("fund"));
 
 	public static ScheduledExecutorService newSheduledInstance() {
-		return scheduledExecutorService;
+		synchronized (FundThreadPool.class) {
+			return scheduledExecutorService;
+		}
 	}
 
 

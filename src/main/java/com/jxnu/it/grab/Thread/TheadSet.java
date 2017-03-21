@@ -29,7 +29,7 @@ public class TheadSet {
 		FundThreadPool.newSheduledInstance().scheduleAtFixedRate(rankThread, Constants.FUND_THREAD_DEPLAY, fundConfig.getPeriod(), TimeUnit.HOURS);
 		//基金净值
 		NetThread netThread = new NetThread(fundRankStore,fundStore, fundConfig);
-		FundThreadPool.newSheduledInstance().scheduleAtFixedRate(netThread, Constants.FUND_THREAD_DEPLAY, fundConfig.getPeriod(), TimeUnit.HOURS);
+		FundThreadPool.newSheduledInstance().scheduleAtFixedRate(netThread, Constants.FUND_THREAD_DEPLAY, 10, TimeUnit.MINUTES);
 		//新基金
 		NewThread newThread =new NewThread(fundStore,fundConfig);
 		FundThreadPool.newSheduledInstance().scheduleAtFixedRate(newThread, Constants.FUND_THREAD_DEPLAY, fundConfig.getPeriod(), TimeUnit.HOURS);
